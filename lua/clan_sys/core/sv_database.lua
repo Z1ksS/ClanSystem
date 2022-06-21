@@ -1,3 +1,14 @@
+function clanSys.UpdateTable()
+    local q = sql.Query("SELECT * FROM clansys_clans") 
+
+    if istable(q) then 
+        clanSys.Clans = q
+    else 
+        clanSys.InitDataBase()
+        clanSys.Clans = {}
+    end
+end 
+
 function clanSys.InitDataBase()
     sql.Query([[
         CREATE TABLE IF NOT EXISTS clansys_clans( 
@@ -12,22 +23,9 @@ function clanSys.InitDataBase()
         )
     ]])
 
-    local q = sql.Query("SELECT * FROM clansys_clans") 
-
-    if istable(q) then 
-        clanSys.Clans = q
-    else 
-        clanSys.clanSys = {}
-    end
+    clanSys.UpdateTable()
 end 
 
 hook.Add("Initialize", "ClanSysDataBaseInitialize", function()
-    local q = sql.Query("SELECT * FROM clansys_clans") 
-
-    if istable(q) then 
-        clanSys.Clans = q
-    else 
-        clanSys.clanSys = {}
-        clanSys.InitDataBase()
-    end
+    clanSys.InitDataBase()
 end)

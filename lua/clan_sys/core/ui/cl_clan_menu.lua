@@ -15,8 +15,19 @@ function clanSys.OpenMainMenu()
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
     end
 
+    local mPanel = vgui.Create("DPanel", Frame)
+    mPanel:SetSize(1250, 650)
+    mPanel:SetPos(25, 25)
+    mPanel.Paint = function(pnl, w, h)
+        draw.RoundedBox(2, 0, 0, w, h, clanSys.MainColors.MainGrey)
+    end
+
     local bTable = {
-        ["Description"] = "all",
+        ["Clans"] = {
+            func = clanSys.ClansMenu(mPanel)
+            perms = {"all"}
+        }
+        --[[["Description"] = "all",
         ["Members"] = "all",
         ["Invite"] = "all",
         ["Currency"] = "all",
@@ -27,18 +38,12 @@ function clanSys.OpenMainMenu()
         ["Ranks"] = "all",
         ["Logs"] = "all",
         ["Abandon Clan"] = "all",
-        ["Admin menu"] = "all",
+        ["Admin menu"] = "all",--]]
     }
 
-    local mPanel = vgui.Create("DPanel", Frame)
-    mPanel:SetSize(clanSys.ScaleW(1250), clanSys.ScaleH(650))
-    mPanel:SetPos(25, 25)
-    mPanel.Paint = function(pnl, w, h)
-        draw.RoundedBox(2, 0, 0, w, h, clanSys.MainColors.MainGrey)
-    end
 
     local bPanel = vgui.Create("DPanel", Frame)
-    bPanel:SetSize(clanSys.ScaleW(200), mPanel:GetTall() - 10)
+    bPanel:SetSize(200, mPanel:GetTall() - 10)
     bPanel:SetPos(mPanel:GetX() + 5, mPanel:GetY() + 5)
     bPanel.Paint = function(pnl, w, h)
         draw.Material(0, 0, 334, h, bgMaterial)
