@@ -17,15 +17,20 @@ function PANEL:SetName(name)
 end 
 
 function PANEL:Paint(w, h)
-    draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
+    if self:IsHovered() then 
+        draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
+    else 
+        draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
+    end
 
+    --draw.RoundedBox(number cornerRadius, number x, number y, number width, number height, table color)
     if self.Icon then 
-        draw.RoundedBox(1, 1, 0, 7, h, clanSys.MainColors.SecondaryGrey)
+        draw.RoundedBox(1, 0, 0, 40, h, clanSys.MainColors.SecondaryGrey)
     end 
 
-    draw.SimpleText(self.Name, "Trebuchet24", w * 0.3, h * 0.5, Color( 255, 255, 255 ))
+    draw.SimpleText(self.Name, "Trebuchet24", 5, 10, Color( 255, 255, 255 ))
 
-    draw.RoundedBox(1, 0, h - 5, 2, 2, clanSys.MainColors.MainBlue)
+    draw.RoundedBox(1, 0, h - 2, w, 2, clanSys.MainColors.MainBlue)
 end 
 
 vgui.Register("clanSys_Button_Menu", PANEL, "DButton")
