@@ -2,7 +2,8 @@ local bgMaterial = Material("materials/clan_system/background.png")
 local logoMaterial = Material("materials/clan_system/logo.png")
 
 function clanSys.OpenMainMenu()
-
+    local activepanel = "Clans"
+    
     local Frame = vgui.Create("DFrame")
     Frame:SetSize(clanSys.ScaleW(1300), clanSys.ScaleH(700))
     Frame:Center()
@@ -23,9 +24,13 @@ function clanSys.OpenMainMenu()
     end
 
     local bTable = {
+        ["Description"] = {
+            func = function() clanSys.ClansMenu(mPanel) end,
+            flags = {"description"}
+        },
         ["Clans"] = {
-            func = clanSys.ClansMenu(mPanel)
-            perms = {"all"}
+            func = function() clanSys.ClansMenu(mPanel) end,
+            flags = {"all"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",
@@ -66,13 +71,25 @@ function clanSys.OpenMainMenu()
 
 
     local value = 1
-    for k, v in pairs(bTable) do 
-        local button = bPanelScroll:Add("clanSys_Button_Menu")
-        button:SetSize(190, 45)
-        button:SetPos(5, 158 + (value - 1) * 55)
-        button:SetName(k)
-        button:SetText("")
+    for k, v in pairs(bTable) do
+        if LocalPlayer():GetPlayerPermissions() and LocalPlayer():GetPlayerPermissions()[v.flags[1]] or v.flags[1] == "all" then
+            local button = bPanelScroll:Add("clanSys_Button_Menu")
+            button:SetSize(190, 45)
+            button:SetPos(5, 158 + (value - 1) * 55)
+            button:SetName(k)
+            button:SetText("")
+
+            button.DoClick = function()
+                clanSys.DescriptionPanel(mPanel)
+            
+                if activepanel == k then 
+                    activepanel = ""
+                else 
+                    activepanel = k
+                end
+            end 
         
-        value = value + 1
+            value = value + 1
+        end
     end 
 end 

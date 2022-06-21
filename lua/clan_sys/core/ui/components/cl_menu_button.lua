@@ -17,11 +17,7 @@ function PANEL:SetName(name)
 end 
 
 function PANEL:Paint(w, h)
-    if self:IsHovered() then 
-        draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
-    else 
-        draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
-    end
+    draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
 
     --draw.RoundedBox(number cornerRadius, number x, number y, number width, number height, table color)
     if self.Icon then 

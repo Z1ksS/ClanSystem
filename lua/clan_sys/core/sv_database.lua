@@ -4,8 +4,11 @@ function clanSys.UpdateTable()
     if istable(q) then 
         clanSys.Clans = q
     else 
-        clanSys.InitDataBase()
         clanSys.Clans = {}
+    end
+
+    for k, v in pairs(player.GetAll()) do 
+        clanSys.SendToClient(v)
     end
 end 
 
