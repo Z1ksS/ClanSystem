@@ -1,7 +1,7 @@
 local clMenu
 
 function clanSys.ClansMenu(parent)
-    if IsValid(clMenu) then print("t") clMenu:Remove() return end 
+    if IsValid(clMenu) then clMenu:Remove() return end 
 
     clMenu = vgui.Create("DPanel", parent)
     clMenu:SetSize(1000, 640)
@@ -13,22 +13,34 @@ function clanSys.ClansMenu(parent)
     end
     
     local value = 1
+    local logo = {}
     if clanSys.Clans then 
         for k, v in pairs(clanSys.Clans) do 
+            local logo = clanSys.GetClanLogo(v.name)
+            
             local clanPanel = vgui.Create("DPanel", clMenu)
             clanPanel:SetSize(clMenu:GetWide() - 10, 70)
-            clanPanel:SetPos(5, 15 + (value - 1) * 60)
+            clanPanel:SetPos(5, 15 + (value - 1) * 90)
             clanPanel.Paint = function(pnl, w, h)
                 draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
 
-                draw.SimpleText(v.name, "Trebuchet24", 5, 10, Color( 255, 255, 255 ))
+                draw.SimpleText(v.name, "Trebuchet24", 60, 10, Color( 255, 255, 255 ))
 
-                draw.RoundedBox(1, 0, h - 2, w, 2, clanSys.MainColors.MainBlue)
+                local color = Color(clanSys.GetClanColor(v.name).r, clanSys.GetClanColor(v.name).g, clanSys.GetClanColor(v.name).b, clanSys.GetClanColor(v.name).a)
+                draw.RoundedBox(1, 0, h - 2, w, 2, color)
 
-                draw.SimpleText("Players in clan: " .. clanSys.GetClanPlayer(v.name), "Trebuchet24", w * 0.4, h * 0.4, Color( 255, 255, 255, 255 ))
+                draw.SimpleText(clanSys.GetClanPlayers(v.name) .. " Members", "Trebuchet18", 60, 35, Color( 255, 255, 255, 255 ))
+                draw.Material(0, 5, 55, 55, Material(logo), Color(255, 255, 255, 255))
             end
-        end 
+            
+            --[[table.insert(logo, {logo = clanSys.GetClanLogo(v.name)})
+            local dLogo = vgui.Create("CircularLogo", clanPanel)
+            dLogo:SetSize(55, 55)
+            dLogo:SetPos(0, 5)
+            dLogo.index = k
+            dLogo:SetImage(logo[1].logo)--]]
 
-        value = value + 1
+            value = value + 1
+        end 
     end
 end 

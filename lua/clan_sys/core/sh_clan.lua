@@ -49,6 +49,26 @@ function clanSys.GetClanPlayersTable(clan)
     end 
 end 
 
+function clanSys.GetClanPlayersTableOnline(clan)
+    if !clanSys.Clans then return 0 end
+
+    local result = {}
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            local memb = util.JSONToTable(v.members)
+
+            for i, j in pairs(memb) do
+                for n, p in pairs(player.GetAll()) do 
+                    if p:SteamID() == i then 
+                        table.insert(result, {ply = p})
+                    end 
+                end 
+            end 
+        end
+    end 
+
+    return result
+end 
 
 function clanSys.GetClanCurrency(clan)
     if !clanSys.Clans then return 0 end
@@ -66,6 +86,31 @@ function clanSys.GetClanColor(clan)
     for k, v in pairs(clanSys.Clans) do
         if v.name == clan then  
             return string.ToColor(v.color)
+        end
+    end 
+end 
+
+function clanSys.GetClanLogo(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            if CLIENT then 
+                if !file.Exists("data/clansys_logos/logo_" .. v.tag, "DATA") then
+                    clanSys.CreateMaterialFromURL(v.logo, "logo_" .. v.tag)
+                end 
+                return "data/clansys_logos/logo_" .. v.tag .. ".png"
+            end 
+        end
+    end 
+end 
+
+function clanSys.GetClanDescription(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.description
         end
     end 
 end 

@@ -17,6 +17,9 @@ function clanSys.InitDataBase()
         CREATE TABLE IF NOT EXISTS clansys_clans( 
             id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
             name VARCHAR(255),
+            logo VARCHAR(200),
+            description VARCHAR(255),
+            tag VARCHAR(10),
             color VARCHAR(255),
             storage INTEGER,
             owner VARCHAR(32),

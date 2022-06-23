@@ -9,9 +9,9 @@ clanSys.MainColors = {
 clanSys.defaultCurrency = 5000
 
 clanSys.Ranks = {
-    ["owner"] = {
-        name = "Owner",
-        perms = {
+    ["owner"] = { --don't edit this, because it is basic for all system
+        name = "Owner", --name of the group
+        perms = { --group flags(permissions)
             ["description"] = true,
             ["kick"] = true, 
             ["upgrade"] = true,

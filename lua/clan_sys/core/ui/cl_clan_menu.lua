@@ -16,21 +16,30 @@ function clanSys.OpenMainMenu()
         draw.RoundedBox(2, 0, 0, w, h, Color(0, 0, 0))
     end
 
+
     local mPanel = vgui.Create("DPanel", Frame)
-    mPanel:SetSize(1250, 650)
+    mPanel:SetSize(clanSys.ScaleW(1250), clanSys.ScaleH(650))
     mPanel:SetPos(25, 25)
     mPanel.Paint = function(pnl, w, h)
         draw.RoundedBox(2, 0, 0, w, h, clanSys.MainColors.MainGrey)
     end
 
+    if activepanel == "Clans" then  
+        clanSys.ClansMenu(mPanel)
+    end 
+
     local bTable = {
-        ["Description"] = {
-            func = function() clanSys.ClansMenu(mPanel) end,
-            flags = {"description"}
-        },
         ["Clans"] = {
             func = function() clanSys.ClansMenu(mPanel) end,
             flags = {"all"}
+        },
+        ["Description"] = {
+            func = function() clanSys.DescriptionPanel(mPanel) end,
+            flags = {"description"}
+        },
+        ["Currency"] = {
+            func = function() clanSys.CurrencyMenu(mPanel) end, 
+            flags = {"withdraw", "deposit"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",
@@ -80,13 +89,15 @@ function clanSys.OpenMainMenu()
             button:SetText("")
 
             button.DoClick = function()
-                clanSys.DescriptionPanel(mPanel)
-            
                 if activepanel == k then 
                     activepanel = ""
-                else 
+                else    
+                    if activepanel != "" then 
+                        bTable[activepanel].func()
+                    end
                     activepanel = k
                 end
+                v.func()
             end 
         
             value = value + 1
