@@ -23,7 +23,8 @@ clanSys.Ranks = {
             ["creategroup"] = true,
             ["editgroups"] = true,
             ["disband"] = true
-        }
+        },
+        priority = 1 --rank priority, so 1 priority means that it can't be edited by anyone else beside this group
     },
     ["member"] = {
         name = "Member",
@@ -39,7 +40,8 @@ clanSys.Ranks = {
             ["creategroup"] = false,
             ["editgroups"] = false,
             ["disband"] = false
-        }
+        },
+        priority = 5
     }
 }
 

@@ -4,7 +4,7 @@ function clanSys.ClansMenu(parent)
     if IsValid(clMenu) then clMenu:Remove() return end 
 
     clMenu = vgui.Create("DPanel", parent)
-    clMenu:SetSize(1000, 640)
+    clMenu:SetSize(clanSys.ScaleW(1000), clanSys.ScaleH(640))
     clMenu:SetPos(225, 5)
     clMenu.Paint = function(pnl, w, h)
         if !clanSys.Clans then
@@ -17,7 +17,7 @@ function clanSys.ClansMenu(parent)
     if clanSys.Clans then 
         for k, v in pairs(clanSys.Clans) do 
             local logo = clanSys.GetClanLogo(v.name)
-            
+
             local clanPanel = vgui.Create("DPanel", clMenu)
             clanPanel:SetSize(clMenu:GetWide() - 10, 70)
             clanPanel:SetPos(5, 15 + (value - 1) * 90)
@@ -43,4 +43,15 @@ function clanSys.ClansMenu(parent)
             value = value + 1
         end 
     end
+
+    local createButton = vgui.Create("DButton", clMenu)
+    createButton:SetSize(150, 25)
+    createButton:SetPos(clMenu:GetWide() - 150, 5)
+    createButton:SetText("")
+    createButton.Paint = function(pnl, w, h)
+        draw.RoundedBox(9, 0, 0, w, h, Color(25, 141, 104))
+
+        draw.SimpleText("CREATE CLAN", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    end     
+    
 end 

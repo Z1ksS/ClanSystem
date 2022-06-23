@@ -40,6 +40,10 @@ function clanSys.OpenMainMenu()
         ["Currency"] = {
             func = function() clanSys.CurrencyMenu(mPanel) end, 
             flags = {"withdraw", "deposit"}
+        },
+        ["Ranks"] = {
+            func = function() clanSys.RankEditMenu(mPanel) end,
+            flags = {"editgroups"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",

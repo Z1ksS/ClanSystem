@@ -21,6 +21,7 @@ function clanSys.InitDataBase()
             description VARCHAR(255),
             tag VARCHAR(10),
             color VARCHAR(255),
+            public BOOL,
             storage INTEGER,
             owner VARCHAR(32),
             perks TEXT,

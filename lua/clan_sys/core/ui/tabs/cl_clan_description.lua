@@ -9,7 +9,7 @@ function clanSys.DescriptionPanel(parent)
     dsPanel:SetSize(clanSys.ScaleW(1000), clanSys.ScaleH(640))
     dsPanel:SetPos(225, 5)
     dsPanel.Paint = function(pnl, w, h)
-        draw.RoundedBox(9, 5, 15, w - 5, 50, Color(135, 135, 135))
+        draw.RoundedBox(9, 5, 15, w - 5, 50, Color(90, 90, 90))
         draw.SimpleText(clan, "Trebuchet24", (w - 5) * 0.5, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         --draw.Arc({x = 100, y = 200}, 0, 360, 100, 30, 100, Color(90, 90, 90))

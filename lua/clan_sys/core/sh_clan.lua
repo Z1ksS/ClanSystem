@@ -114,3 +114,23 @@ function clanSys.GetClanDescription(clan)
         end
     end 
 end 
+
+function clanSys.GetClanRanks(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return util.JSONToTable(v.ranks)
+        end
+    end 
+end 
+
+function clanSys.GetClanIndex(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return k
+        end
+    end 
+end 
