@@ -1,4 +1,5 @@
 clanSys = clanSys or {}
+clanSys.ClanMoneyHistory = {}
 
 local string = string
 local file = file

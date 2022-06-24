@@ -31,9 +31,10 @@ local function BuildRank(parent, selected)
                     local bytes = #compressed_data
 
                     net.Start("ClanSysSaveRanks")
+                        local edited = {rank = k, perms = i, editor = LocalPlayer(), clan = clan}
                         net.WriteUInt( bytes, 32 )
 	                    net.WriteData( compressed_data, bytes )
-                        net.WriteString(clan)
+                        net.WriteTable(edited)
                     net.SendToServer()
                 end 
 
