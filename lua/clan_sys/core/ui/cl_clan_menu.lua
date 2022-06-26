@@ -48,6 +48,10 @@ function clanSys.OpenMainMenu()
         ["Ranks"] = {
             func = function() clanSys.RankEditMenu(mPanel) end,
             flags = {"editgroups"}
+        },
+        ["Invite box"] = {
+            func = function() clanSys.ClansInvitePlayerMenu(mPanel) end,
+            flags = {"all"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",

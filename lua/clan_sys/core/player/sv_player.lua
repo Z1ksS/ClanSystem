@@ -1,5 +1,7 @@
 util.AddNetworkString("ClanSysSyncWithClient")
 
+util.AddNetworkString("ClanSysInvitesSyncWithServer")
+
 function clanSys.SendToClient(ply)
     local dataToSend = clanSys.Clans and util.TableToJSON(clanSys.Clans) or util.TableToJSON({})
 
@@ -12,6 +14,18 @@ function clanSys.SendToClient(ply)
     net.Send(ply) 
 end 
 
-hook.Add("PlayerSpawn", "ClanSysPlayerSpawn", function(ply)
+hook.Add("PlayerSpawn", "clanSysPlayerSpawn", function(ply)
     clanSys.SendToClient(ply)
+end )
+
+net.Receive("ClanSysInvitesSyncWithServer", function()
+    local data = net.ReadTable()
+
+    clanSys.Invites = data 
+end )
+
+hook.Add("PlayerDisconnected", "clanSysPlayerDisconnected", function(ply)
+    if clanSys.Invites[ply] then 
+        table.RemoveByValue(clanSys.Invites, clanSys.Invites[ply])
+    end 
 end )

@@ -3,6 +3,8 @@ util.AddNetworkString("ClanSysSendMoney")
 util.AddNetworkString("ClanSysCreateRank")
 
 util.AddNetworkString("ClanSysCreateClan")
+util.AddNetworkString("ClanSysAcceptInvite")
+
 
 function clanSys.CreateClan(name, logo, description, tag, public, color, owner)
     local wId = owner:SteamID()
@@ -59,8 +61,29 @@ hook.Add("OnCreatedRank", "clanSysOnCreatedRank", function(ply)
     local newRanks = table.Merge(ranksOld, rankNew)
 
     local newRanksToSet = util.TableToJSON(newRanks)
-    sql.Query("UPDATE clansys_clans SET ranks = " .. SQLStr(newRanksToSet) .. "WHERE id = " .. SQLStr(clanSys.GetClanIndex( ply:GetPlayerClan() ) ) .. ";")
+    local id = tonumber(clanSys.GetClanIndex(ply:GetPlayerClan()))
+    sql.Query("UPDATE clansys_clans SET ranks = " .. SQLStr(newRanksToSet) .. "WHERE id = " .. SQLStr(id) .. ";")
     clanSys.UpdateTable()
+end )
+
+hook.Add("OnJoinedClan", "clanSysOnJoinClan", function(ply, clan)
+    local id = tonumber(clanSys.GetClanIndex(clan))
+    local members = util.JSONToTable(clanSys.Clans[id].members)
+    
+    local mId = ply:SteamID()
+    local newMember = {
+        [tostring(mId)] = {
+            rank = "member"
+        }
+    }
+
+    table.Merge(members, newMember)
+    local newData = util.TableToJSON(members)
+    
+    sql.Query("UPDATE clansys_clans SET members = " .. SQLStr(newData) .. "WHERE id = " .. SQLStr(clanSys.GetClanIndex( clan ) ) .. ";")
+    clanSys.UpdateTable()
+
+    table.RemoveByValue(clanSys.Invites, ply)
 end )
 
 net.Receive("ClanSysSaveRanks", function()
@@ -117,4 +140,12 @@ net.Receive("ClanSysCreateClan", function()
     data.ply:ChatPrint("You have created clan " .. data.name .. "!")
 
     hook.Run("OnCreatedClan", data.name, data.tag, data.link, data.typeClan, data.ply)
+end )
+
+net.Receive("ClanSysAcceptInvite", function()
+    local clan = net.ReadString()
+    local ply = net.ReadEntity()
+
+    if !ply:IsValid() then return end 
+    hook.Run("OnJoinedClan", ply, clan)
 end )

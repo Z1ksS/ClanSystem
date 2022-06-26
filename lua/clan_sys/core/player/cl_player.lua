@@ -7,7 +7,12 @@ net.Receive("ClanSysSyncWithClient", function(len, ply)
 
     clanSys.Clans = util.JSONToTable(data) or {}
     clanSys.Messages = {}
+
     clanSys.Invites = {}
+    net.Start("ClanSysInvitesSyncWithServer")
+        net.WriteTable(clanSys.Invites)
+    net.SendToServer()
+    
     if clanSys.Clans then 
         for k, v in pairs(clanSys.Clans) do 
             clanSys.Messages[v.name] = {}

@@ -86,5 +86,11 @@ function clanSys.ClansInviteMenu(parent)
         end
 
         clanSys.Invites[selectedPlayer] = LocalPlayer():GetPlayerClan()
+        
+        selectedPlayer:ChatPrint("You were invited in clan " .. LocalPlayer():GetPlayerClan())
+
+        net.Start("ClanSysInvitesSyncWithServer")
+            net.WriteTable(clanSys.Invites)
+        net.SendToServer()
     end 
 end 
