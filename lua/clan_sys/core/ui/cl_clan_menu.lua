@@ -29,10 +29,6 @@ function clanSys.OpenMainMenu()
     end 
 
     local bTable = {
-        ["Clans"] = {
-            func = function() clanSys.ClansMenu(mPanel) end,
-            flags = {"all"}
-        },
         ["Description"] = {
             func = function() clanSys.DescriptionPanel(mPanel) end,
             flags = {"description"}
@@ -40,6 +36,14 @@ function clanSys.OpenMainMenu()
         ["Currency"] = {
             func = function() clanSys.CurrencyMenu(mPanel) end, 
             flags = {"withdraw", "deposit"}
+        },
+        ["Invite"] = {
+            func = function() clanSys.ClansInviteMenu(mPanel) end,
+            flags = {"invite"}
+        },
+        ["Clans"] = {
+            func = function() clanSys.ClansMenu(mPanel) end,
+            flags = {"all"}
         },
         ["Ranks"] = {
             func = function() clanSys.RankEditMenu(mPanel) end,
@@ -84,7 +88,8 @@ function clanSys.OpenMainMenu()
 
 
     local value = 1
-    for k, v in pairs(bTable) do
+
+    for k, v in SortedPairs(bTable) do
         if LocalPlayer():GetPlayerPermissions() and LocalPlayer():GetPlayerPermissions()[v.flags[1]] or v.flags[1] == "all" then
             local button = bPanelScroll:Add("clanSys_Button_Menu")
             button:SetSize(190, 45)
