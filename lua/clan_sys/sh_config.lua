@@ -47,3 +47,5 @@ clanSys.Ranks = {
 
 clanSys.ChatCommand = "c" --chat prefix for sending messages in clan chat, so you can use !c or /c
 clanSys.MenuCommand = "clan" --chat prefix for opening clan menu
+
+clanSys.ClanPrice = "1000000" --price to create clan

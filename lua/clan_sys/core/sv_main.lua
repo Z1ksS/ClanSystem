@@ -1,5 +1,8 @@
 util.AddNetworkString("ClanSysSaveRanks")
 util.AddNetworkString("ClanSysSendMoney")
+util.AddNetworkString("ClanSysCreateRank")
+
+util.AddNetworkString("ClanSysCreateClan")
 
 function clanSys.CreateClan(name, logo, description, tag, public, color, owner)
     local wId = owner:SteamID()
@@ -25,6 +28,40 @@ hook.Add("OnUpdatedStorageValue", "clanSysUpdatedStorageValue", function(clan, v
     sql.Query("UPDATE clansys_clans SET storage = " .. SQLStr(clanSys.GetClanCurrency(clan) + value) .. "WHERE id = " .. SQLStr(clanSys.GetClanIndex(clan)) .. ";")
     clanSys.UpdateTable()
 end)
+
+hook.Add("OnCreatedClan", "clanSysOnCreatedClan", function(name, tag, logo, typeClan, ply)
+    local description = "This is default description for " .. name .. ". You can edit this in clan settings!"
+    clanSys.CreateClan(name, logo, description, tag, typeClan, Color(255, 2, 5), ply)
+end)
+
+hook.Add("OnCreatedRank", "clanSysOnCreatedRank", function(ply)
+    local ranksOld = util.JSONToTable(clanSys.Clans[clanSys.GetClanIndex(ply:GetPlayerClan())].ranks)
+
+    local rankNew = {
+        ["new role"] = {
+            name = "new role",
+            perms = {
+                ["description"] = false,
+                ["kick"] = false, 
+                ["upgrade"] = false,
+                ["withdraw"] = false,
+                ["deposit"] = false,
+                ["invite"] = false,
+                ["editgang"] = false,
+                ["setgroup"] = false,
+                ["creategroup"] = false,
+                ["editgroups"] = false,
+                ["disband"] = false
+            },
+            priority = 5
+        }
+    }
+    local newRanks = table.Merge(ranksOld, rankNew)
+
+    local newRanksToSet = util.TableToJSON(newRanks)
+    sql.Query("UPDATE clansys_clans SET ranks = " .. SQLStr(newRanksToSet) .. "WHERE id = " .. SQLStr(clanSys.GetClanIndex( ply:GetPlayerClan() ) ) .. ";")
+    clanSys.UpdateTable()
+end )
 
 net.Receive("ClanSysSaveRanks", function()
     local bytes = net.ReadUInt(32)
@@ -60,4 +97,24 @@ net.Receive("ClanSysSendMoney", function()
     ply:ChatPrint(typeSend == "deposit" and "You have contributed $" .. amount .. " in your clan" or "You have taken $" .. amount .. " from your clan's storage")
 
     hook.Run("OnUpdatedStorageValue", clan, -val, typeSend, ply)
+end )
+
+net.Receive("ClanSysCreateRank", function()
+    local ply = net.ReadEntity()
+    
+    if !ply:IsValid() then return end 
+    if ply:IsValid() and !ply:GetPlayerPermissions()["creategroup"] or !ply:GetPlayerPermissions()["editgroups"] then return end 
+
+    hook.Run("OnCreatedRank", ply)
+end )
+
+net.Receive("ClanSysCreateClan", function()
+    local data = net.ReadTable()
+
+    if !data.ply:IsValid() then return end 
+
+    data.ply:addMoney(-tonumber(clanSys.ClanPrice))
+    data.ply:ChatPrint("You have created clan " .. data.name .. "!")
+
+    hook.Run("OnCreatedClan", data.name, data.tag, data.link, data.typeClan, data.ply)
 end )

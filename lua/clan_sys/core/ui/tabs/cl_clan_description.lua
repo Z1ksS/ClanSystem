@@ -22,7 +22,7 @@ function clanSys.DescriptionPanel(parent)
     end
 
     local logoMaterial = clanSys.GetClanLogo(clan)
-
+    
     local logo = vgui.Create("CircularLogo", dsPanel)
     logo:SetSize(200, 200)
     logo:SetPos(25, 100)

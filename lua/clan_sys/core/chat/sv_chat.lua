@@ -1,6 +1,7 @@
 util.AddNetworkString("ClanSysSendChat")
 util.AddNetworkString("ClanSysSendChatServer")
 
+util.AddNetworkString("ClanSysOpenMenu")
 
 local function sendChat(ply, txt)
 	local sendTo = {}
@@ -30,5 +31,11 @@ hook.Add("PlayerSay", "ClanSysPlayerSay", function(ply, text)
 		text = string.Trim(string.sub(text, string.len(clanSys.ChatCommand) + 2))
 		if text != "" then sendChat(ply, text) end
 		return ""
+	end
+
+	if string.StartWith(string.lower(text), string.lower("/" .. clanSys.MenuCommand)) or string.StartWith(string.lower(text), string.lower("!" .. clanSys.MenuCommand)) then 
+		net.Start("ClanSysOpenMenu")
+		net.Send(ply)
+		print("t")
 	end
 end )

@@ -10,14 +10,14 @@ local function BuildRecentPaymentsMenu(parent)
     recentPanel:SetSize(parent:GetWide() / 2 - 100, parent:GetTall() - 100)
     recentPanel:SetPos(parent:GetWide() / 2, 75)
     recentPanel.Paint = function(pnl, w, h)
-        draw.RoundedBox(9, 0, h * 0.1, w, h - (h * 0.1), Color(135, 135, 135))
+        draw.RoundedBox(9, 0, 20, w, h - 20, Color(135, 135, 135))
 
-        draw.SimpleText("Recent", "Trebuchet24", w * 0.5, h * 0.07, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Recent", "Trebuchet24", w * 0.5, 10, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
     
     local paymentsScroll = vgui.Create( "DScrollPanel", recentPanel )
     paymentsScroll:SetSize(recentPanel:GetWide() - 10, recentPanel:GetTall() - 20)
-    paymentsScroll:SetPos(5, 15)
+    paymentsScroll:SetPos(5, 0)
     local sbar = paymentsScroll:GetVBar()
     function sbar:Paint(w, h)
     end
@@ -79,7 +79,7 @@ function clanSys.CurrencyMenu(parent)
 
         draw.SimpleText(clan .. " - ", "Trebuchet24", w * 0.5, 40, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-        draw.SimpleText("$" .. clanSys.GetClanCurrency(clan), "Trebuchet24", w * 0.5 + xOffSet * 0.5, 40, Color( 70, 227, 56, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText(DarkRP.formatMoney(tonumber(clanSys.GetClanCurrency(clan))), "Trebuchet24", w * 0.5 + xOffSet * 0.5, 40, Color( 70, 227, 56, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
     end
 
     local amountPanel = vgui.Create("DPanel", crMenu)

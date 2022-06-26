@@ -96,10 +96,10 @@ function clanSys.GetClanLogo(clan)
     for k, v in pairs(clanSys.Clans) do
         if v.name == clan then  
             if CLIENT then 
-                if !file.Exists("data/clansys_logos/logo_" .. v.tag, "DATA") then
-                    clanSys.CreateMaterialFromURL(v.logo, "logo_" .. v.tag)
+                if !file.Exists("data/clansys_logos/logo_" .. string.lower(v.tag), "DATA") then
+                    clanSys.CreateMaterialFromURL(v.logo, "logo_" .. string.lower(v.tag))
                 end 
-                return "data/clansys_logos/logo_" .. v.tag .. ".png"
+                return "data/clansys_logos/logo_" .. string.lower(v.tag) .. ".png"
             end 
         end
     end 
@@ -130,7 +130,7 @@ function clanSys.GetClanIndex(clan)
 
     for k, v in pairs(clanSys.Clans) do
         if v.name == clan then  
-            return k
+            return v.id
         end
     end 
 end 

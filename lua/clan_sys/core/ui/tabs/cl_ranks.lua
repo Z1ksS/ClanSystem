@@ -23,6 +23,7 @@ local function BuildRank(parent, selected)
                 checkBox:SetPos(155 + (x - 1) * 150, 25 + (y - 1) * 100)
                 checkBox:SetValue(j)
                 checkBox.OnChange = function(pnl, bool)
+
                     local data = util.JSONToTable(clanSys.Clans[clanSys.GetClanIndex(clan)].ranks)
                     data[k].perms[i] = bool 
                     local dataToSend = util.TableToJSON(data)
@@ -86,6 +87,11 @@ function clanSys.RankEditMenu(parent)
             draw.SimpleText("+", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 100 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
         end 
     end
+    addButton.DoClick = function()
+        net.Start("ClanSysCreateRank")
+            net.WriteEntity(LocalPlayer())
+        net.SendToServer()
+    end 
 
     local rankPanelScroll = vgui.Create( "DScrollPanel", rankPanel )
     rankPanelScroll:SetSize(rankPanel:GetWide() - 10, rankPanel:GetTall() - 20)

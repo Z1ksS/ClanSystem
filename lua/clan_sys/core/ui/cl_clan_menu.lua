@@ -108,3 +108,5 @@ function clanSys.OpenMainMenu()
         end
     end 
 end 
+
+net.Receive("ClanSysOpenMenu", clanSys.OpenMainMenu)

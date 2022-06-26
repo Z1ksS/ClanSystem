@@ -131,7 +131,7 @@ function PANELLogo:Paint(w, h)
 end
 
 function PANELLogo:SetImage(img)
-    self.base:SetImage("data/clansys_logos/logo_CT.png")
+    self.base:SetImage(img)
 end 
 
 vgui.Register("CircularLogo", PANELLogo)

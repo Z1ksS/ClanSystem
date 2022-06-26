@@ -7,7 +7,7 @@ function clanSys.ClansMenu(parent)
     clMenu:SetSize(clanSys.ScaleW(1000), clanSys.ScaleH(640))
     clMenu:SetPos(225, 5)
     clMenu.Paint = function(pnl, w, h)
-        if !clanSys.Clans then
+        if table.IsEmpty(clanSys.Clans) then
             draw.SimpleText("There are no clans now!", "Trebuchet24", w * 0.4, h * 0.4, Color( 255, 255, 255, 255 ))
         end
     end
@@ -20,7 +20,7 @@ function clanSys.ClansMenu(parent)
 
             local clanPanel = vgui.Create("DPanel", clMenu)
             clanPanel:SetSize(clMenu:GetWide() - 10, 70)
-            clanPanel:SetPos(5, 15 + (value - 1) * 90)
+            clanPanel:SetPos(5, 45 + (value - 1) * 90)
             clanPanel.Paint = function(pnl, w, h)
                 draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
 
@@ -52,6 +52,13 @@ function clanSys.ClansMenu(parent)
         draw.RoundedBox(9, 0, 0, w, h, Color(25, 141, 104))
 
         draw.SimpleText("CREATE CLAN", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end     
+    end   
+    createButton.DoClick = function()
+        if LocalPlayer():GetPlayerClan() then Derma_Message("You are currently in a clan! Leave or disband your current clan, to create your own!", "Notice", "OK") return end
+
+        clMenu:Remove()
+        clanSys.ClansCreateMenu(parent)
+        
+    end   
     
 end 
