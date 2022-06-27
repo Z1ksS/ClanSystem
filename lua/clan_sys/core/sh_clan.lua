@@ -134,3 +134,17 @@ function clanSys.GetClanIndex(clan)
         end
     end 
 end 
+
+function clanSys.GetPlayerPerks(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            if v.perks then 
+                return util.JSONToTable(v.perks)
+            else 
+                return {}
+            end 
+        end
+    end 
+end 

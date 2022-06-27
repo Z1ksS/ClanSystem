@@ -45,6 +45,72 @@ clanSys.Ranks = {
     }
 }
 
+clanSys.ClanPerks = {
+    ["health"] = {
+        namePerk = "Health",
+        color = Color(255, 0, 0),
+        func = function(ply) 
+            local level = clanSys.GetPlayerPerks(LocalPlayer():GetPlayerClan())["health"].level
+
+            if level <= 0 then return end 
+
+            ply:SetHealth(ply:Health() + clanSys.ClanPerks["health"].tiers[level].bonus) 
+        end,
+        tiers = {
+            [1] = {
+                price = 450000,
+                bonus = 2,
+            },
+            [2] = {
+                price = 500000,
+                bonus = 5,
+            },
+            [3] = {
+                price = 650000,
+                bonus = 10,
+            },
+            [4] = {
+                price = 700000,
+                bonus = 15,
+            }
+        }
+    },
+    ["armor"] = {
+        namePerk = "Armor",
+        color = Color(0, 0, 255),
+        func = function(ply) ply:SetArmor(ply:Armor() + clanSys.GetPlayerPerks[ply:GetPlayerClan()]["armor"]) end,
+        tiers = {
+            [1] = {
+                price = 450000,
+                bonus = 3,
+            },
+            [2] = {
+                price = 500000,
+                bonus = 5,
+            },
+            [3] = {
+                price = 850000,
+                bonus = 15,
+            }
+        }
+    },
+    ["permaweapon"] = {
+        namePerk = "Perma Weapon",
+        color = Color(255, 255, 255),
+        func = function(ply) ply:Give(clanSys.GetPlayerPerks[ply:GetPlayerClan()]["permaweapon"]) end,
+        tiers = {
+            [1] = {
+                price = 500000,
+                bonus = "weapon_ak472",
+            },
+            [2] = {
+                price = 1000000,
+                bonus = "weapon_m42",
+            }
+        }
+    },
+}
+
 clanSys.ChatCommand = "c" --chat prefix for sending messages in clan chat, so you can use !c or /c
 clanSys.MenuCommand = "clan" --chat prefix for opening clan menu
 

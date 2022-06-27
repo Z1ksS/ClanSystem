@@ -15,9 +15,18 @@ function clanSys.CreateClan(name, logo, description, tag, public, color, owner)
         }
     }  
 
+    local defaultPerks = {}
+
+    for k, v in pairs(clanSys.ClanPerks) do 
+        defaultPerks[k] = {
+            name = v.namePerk,
+            level = 0
+        }
+    end
+
     local logo_new = logo or "https://i.imgur.com/mYts9hj.png"
     local description_new = description or "Clan description"
-    sql.Query("INSERT INTO clansys_clans(name, logo, description, tag, color, public, storage, owner, perks, ranks, members) VALUES(".. SQLStr(name) .. ", " .. SQLStr(logo_new) .. ", " .. SQLStr(description_new) .. ", " .. SQLStr(tag) .. ", " .. SQLStr(color) .. ", " .. SQLStr(public) .. ", " .. SQLStr(clanSys.defaultCurrency) .. ", " .. SQLStr(wId) .. ", " .. SQLStr(util.TableToJSON({})) .. ", " .. SQLStr(util.TableToJSON(clanSys.Ranks)) .. ", " .. SQLStr(util.TableToJSON(members)) .. ")")
+    sql.Query("INSERT INTO clansys_clans(name, logo, description, tag, color, public, storage, owner, perks, ranks, members) VALUES(".. SQLStr(name) .. ", " .. SQLStr(logo_new) .. ", " .. SQLStr(description_new) .. ", " .. SQLStr(tag) .. ", " .. SQLStr(color) .. ", " .. SQLStr(public) .. ", " .. SQLStr(clanSys.defaultCurrency) .. ", " .. SQLStr(wId) .. ", " .. SQLStr(util.TableToJSON(defaultPerks)) .. ", " .. SQLStr(util.TableToJSON(clanSys.Ranks)) .. ", " .. SQLStr(util.TableToJSON(members)) .. ")")
     clanSys.UpdateTable()
 end 
 

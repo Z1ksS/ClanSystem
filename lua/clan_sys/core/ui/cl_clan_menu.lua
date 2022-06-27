@@ -52,6 +52,10 @@ function clanSys.OpenMainMenu()
         ["Invite box"] = {
             func = function() clanSys.ClansInvitePlayerMenu(mPanel) end,
             flags = {"all"}
+        },
+        ["Perks"] = {
+            func = function() clanSys.ClanPerksMenu(mPanel) end,
+            flags = {"all"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",
