@@ -18,25 +18,41 @@ local function BuildRank(parent, selected)
     for k, v in pairs(clanSys.GetClanRanks(clan)) do 
         if selected == k then 
             for i, j in pairs(v.perms) do 
+
+                local function SendRank(bool)
+                    local data = util.JSONToTable(clanSys.Clans[clanSys.GetClanIndex(clan)].ranks)
+                    data[k].perms[i] = bool 
+                     local dataToSend = util.TableToJSON(data)
+
+                    local compressed_data = util.Compress( dataToSend )
+                    local bytes = #compressed_data
+
+                    local edited = {rank = k, perms = i, editor = LocalPlayer(), clan = clan}
+
+                    net.Start("ClanSysSaveRanks")
+                        net.WriteUInt( bytes, 32 )
+	                    net.WriteData( compressed_data, bytes )
+                        net.WriteTable(edited)
+                    net.SendToServer()
+                end 
+
                 local checkBox = vgui.Create("clanSys_CheckBox", panelRankSetUp)
                 checkBox:SetSize(50, 50)
                 checkBox:SetPos(155 + (x - 1) * 150, 25 + (y - 1) * 100)
                 checkBox:SetValue(j)
                 checkBox.OnChange = function(pnl, bool)
+                    if LocalPlayer():GetPlayerRankPriority() >= v.priority then 
 
-                    local data = util.JSONToTable(clanSys.Clans[clanSys.GetClanIndex(clan)].ranks)
-                    data[k].perms[i] = bool 
-                    local dataToSend = util.TableToJSON(data)
+                        Derma_Query(
+                            "Are you sure about that(changes can't be canceled)",
+                            "Confirmation:",
+                            "Yes",
+                            function() SendRank(bool) end,
+	                        "No",
+	                        function() pnl:SetChecked(not bool) return end
+                        )
+                    end 
 
-                    local compressed_data = util.Compress( dataToSend )
-                    local bytes = #compressed_data
-
-                    net.Start("ClanSysSaveRanks")
-                        local edited = {rank = k, perms = i, editor = LocalPlayer(), clan = clan}
-                        net.WriteUInt( bytes, 32 )
-	                    net.WriteData( compressed_data, bytes )
-                        net.WriteTable(edited)
-                    net.SendToServer()
                 end 
 
                 local checkBoxLabel = vgui.Create("DLabel", panelRankSetUp)
@@ -76,22 +92,24 @@ function clanSys.RankEditMenu(parent)
         draw.SimpleText("Ranks", "Trebuchet24", w * 0.5, 10, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
     end
 
-    local addButton = vgui.Create("DButton", rankPanel)
-    addButton:SetSize(20, 20)
-    addButton:SetPos(rankPanel:GetWide() * 0.5 + 25, 0)
-    addButton:SetText("")
-    addButton.Paint = function(pnl, w, h)
-        if pnl:IsHovered() then 
-            draw.SimpleText("+", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-        else 
-            draw.SimpleText("+", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 100 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    if LocalPlayer():GetPlayerPermissions()["creategroup"] then 
+        local addButton = vgui.Create("DButton", rankPanel)
+        addButton:SetSize(20, 20)
+        addButton:SetPos(rankPanel:GetWide() * 0.5 + 25, 0)
+        addButton:SetText("")
+        addButton.Paint = function(pnl, w, h)
+            if pnl:IsHovered() then 
+                draw.SimpleText("+", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            else 
+                draw.SimpleText("+", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 100 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+            end 
+        end
+        addButton.DoClick = function()
+            net.Start("ClanSysCreateRank")
+                net.WriteEntity(LocalPlayer())
+            net.SendToServer()
         end 
     end
-    addButton.DoClick = function()
-        net.Start("ClanSysCreateRank")
-            net.WriteEntity(LocalPlayer())
-        net.SendToServer()
-    end 
 
     local rankPanelScroll = vgui.Create( "DScrollPanel", rankPanel )
     rankPanelScroll:SetSize(rankPanel:GetWide() - 10, rankPanel:GetTall() - 20)

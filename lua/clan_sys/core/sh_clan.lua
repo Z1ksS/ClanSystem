@@ -130,7 +130,7 @@ function clanSys.GetClanIndex(clan)
 
     for k, v in pairs(clanSys.Clans) do
         if v.name == clan then  
-            return v.id
+            return k
         end
     end 
 end 

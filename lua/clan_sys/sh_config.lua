@@ -50,11 +50,12 @@ clanSys.ClanPerks = {
         namePerk = "Health",
         color = Color(255, 0, 0),
         func = function(ply) 
-            local level = clanSys.GetPlayerPerks(LocalPlayer():GetPlayerClan())["health"].level
+            local level = clanSys.GetPlayerPerks(ply:GetPlayerClan())["health"].level
+            --if level <= 0 then return end 
 
-            if level <= 0 then return end 
-
-            ply:SetHealth(ply:Health() + clanSys.ClanPerks["health"].tiers[level].bonus) 
+            if SERVER then
+                ply:SetHealth(ply:Health() + clanSys.ClanPerks["health"].tiers[level].bonus) 
+            end
         end,
         tiers = {
             [1] = {
@@ -78,7 +79,14 @@ clanSys.ClanPerks = {
     ["armor"] = {
         namePerk = "Armor",
         color = Color(0, 0, 255),
-        func = function(ply) ply:SetArmor(ply:Armor() + clanSys.GetPlayerPerks[ply:GetPlayerClan()]["armor"]) end,
+        func = function(ply) 
+            local level = clanSys.GetPlayerPerks(ply:GetPlayerClan())["armor"].level
+            --if level <= 0 then return end
+
+            if SERVER then 
+                ply:SetArmor(ply:Armor() + clanSys.ClanPerks["armor"].tiers[level].bonus) 
+            end 
+        end,
         tiers = {
             [1] = {
                 price = 450000,
@@ -97,7 +105,14 @@ clanSys.ClanPerks = {
     ["permaweapon"] = {
         namePerk = "Perma Weapon",
         color = Color(255, 255, 255),
-        func = function(ply) ply:Give(clanSys.GetPlayerPerks[ply:GetPlayerClan()]["permaweapon"]) end,
+        func = function(ply) 
+            local level = clanSys.GetPlayerPerks(ply:GetPlayerClan())["permaweapon"].level
+            --if level <= 0 then return end
+
+            if SERVER then  
+                ply:Give(clanSys.ClanPerks["permaweapon"].tiers[level].bonus) 
+            end
+        end,
         tiers = {
             [1] = {
                 price = 500000,
@@ -109,6 +124,63 @@ clanSys.ClanPerks = {
             }
         }
     },
+    ["damagereduction"] = {
+        namePerk = "Clan Damage Reduction",
+        color = Color(255, 255, 255),
+        func = function(ply) 
+            if SERVER then 
+                local level = clanSys.GetPlayerPerks(ply:GetPlayerClan())["damagereduction"].level
+
+                hook.Add("EntityTakeDamage", "clanSysReduceDamage", function( target, dmginfo )
+                    if ( target:IsPlayer() and target:GetPlayerClan()  ) then 
+                        dmginfo:SetDamage(dmginfo:GetDamage() * (clanSys.ClanPerks["damagereduction"].tiers[level].bonus / 100 ))
+                    end
+                end )
+            end 
+        end,
+        tiers = {
+            [1] = {
+                price = 500000,
+                bonus = 10,
+            },
+            [2] = {
+                price = 1000000,
+                bonus = 20,
+            },
+            [3] = {
+                price = 1350000,
+                bonus = 25,
+            },
+            [4] = {
+                price = 1500000,
+                bonus = 30,
+            },
+            [5] = {
+                price = 1750000,
+                bonus = 35,
+            },
+            [6] = {
+                price = 1950000,
+                bonus = 40,
+            },
+            [7] = {
+                price = 2250000,
+                bonus = 45,
+            },
+            [8] = {
+                price = 2450000,
+                bonus = 50,
+            },
+            [9] = {
+                price = 2550000,
+                bonus = 55,
+            },
+            [10] = {
+                price = 2750000,
+                bonus = 60,
+            }
+        }
+    }
 }
 
 clanSys.ChatCommand = "c" --chat prefix for sending messages in clan chat, so you can use !c or /c

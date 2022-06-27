@@ -55,7 +55,7 @@ function clanSys.OpenMainMenu()
         },
         ["Perks"] = {
             func = function() clanSys.ClanPerksMenu(mPanel) end,
-            flags = {"all"}
+            flags = {"upgrade"}
         }
         --[[["Description"] = "all",
         ["Members"] = "all",

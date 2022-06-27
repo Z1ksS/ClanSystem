@@ -125,13 +125,11 @@ function clanSys.CurrencyMenu(parent)
         if tonumber(amountToSend) <= 1 then LocalPlayer():ChatPrint("The value of the deposited amount must be greater than one!") return end 
         if tonumber(amountToSend) > LocalPlayer():getDarkRPVar("money") then LocalPlayer():ChatPrint("You don't have enough money!") return end
         
-        if LocalPlayer():canAfford(amountToSend) then 
-            net.Start("ClanSysSendMoney")
-                net.WriteInt(amountToSend, 32) 
-                net.WriteString("deposit")
-                net.WriteEntity(LocalPlayer())
-            net.SendToServer()
-        end 
+        net.Start("ClanSysSendMoney")
+            net.WriteInt(amountToSend, 32) 
+            net.WriteString("deposit")
+            net.WriteEntity(LocalPlayer())
+        net.SendToServer() 
 
         table.insert(clanSys.ClanMoneyHistory, {clan = clan, ply = LocalPlayer(), typeOp = "deposit", amount = amountToSend})
         BuildRecentPaymentsMenu(crMenu)

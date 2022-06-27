@@ -5,6 +5,7 @@ util.AddNetworkString("ClanSysCreateRank")
 util.AddNetworkString("ClanSysCreateClan")
 util.AddNetworkString("ClanSysAcceptInvite")
 
+util.AddNetworkString("ClanSysUpgradePerk")
 
 function clanSys.CreateClan(name, logo, description, tag, public, color, owner)
     local wId = owner:SteamID()
@@ -95,6 +96,24 @@ hook.Add("OnJoinedClan", "clanSysOnJoinClan", function(ply, clan)
     table.RemoveByValue(clanSys.Invites, ply)
 end )
 
+hook.Add("OnUpgradePerk", "clanSysOnUpgradePerk", function(ply, perk)
+    local clan = ply:GetPlayerClan()
+    local id = tonumber(clanSys.GetClanIndex(clan)) 
+
+    local perks = util.JSONToTable(clanSys.Clans[id].perks)
+
+    perks[perk].level = perks[perk].level + 1
+    
+    local clanMoney = tonumber(clanSys.GetClanCurrency(clan))
+    local price = clanSys.ClanPerks[perk].tiers[perks[perk].level].price
+
+    if clanSys.ClanPerks[perk].tiers[perks[perk].level].price > clanMoney then return end 
+
+    sql.Query("UPDATE clansys_clans SET storage = " .. SQLStr(clanSys.GetClanCurrency(clan) - price) .. "WHERE id = " .. SQLStr(id) .. ";")
+    sql.Query("UPDATE clansys_clans SET perks = " .. SQLStr(util.TableToJSON(perks)) .. "WHERE id = " .. SQLStr(id) .. ";")
+    clanSys.UpdateTable()
+end )
+
 net.Receive("ClanSysSaveRanks", function()
     local bytes = net.ReadUInt(32)
 	local compressed_data = net.ReadData(bytes)
@@ -157,4 +176,11 @@ net.Receive("ClanSysAcceptInvite", function()
 
     if !ply:IsValid() then return end 
     hook.Run("OnJoinedClan", ply, clan)
+end )
+
+net.Receive("ClanSysUpgradePerk", function()
+    local ply = net.ReadEntity()
+    local perk = net.ReadString()
+
+    hook.Run("OnUpgradePerk", ply, perk)
 end )

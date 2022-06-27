@@ -42,3 +42,18 @@ function pMeta:GetPlayerPermissions()
         end 
     end
 end 
+
+function pMeta:GetPlayerRankPriority()
+    if !clanSys.Clans then return nil end 
+
+    for k, v in pairs(clanSys.Clans) do 
+        local memb = util.JSONToTable(v.members)
+        local ranks = util.JSONToTable(v.ranks)
+
+        if memb[self:SteamID()] then 
+            return ranks[self:GetPlayerClanRank()].priority
+        else 
+            return nil
+        end 
+    end
+end 
