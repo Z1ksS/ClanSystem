@@ -7,7 +7,7 @@ local function BuildRecentPaymentsMenu(parent)
     if IsValid(recentPanel) then recentPanel:Remove() return end 
 
     recentPanel = vgui.Create("DPanel", parent)
-    recentPanel:SetSize(parent:GetWide() / 2 - 100, parent:GetTall() - 100)
+    recentPanel:SetSize(clanSys.ScaleW(parent:GetWide() / 2 - 100), clanSys.ScaleH(parent:GetTall() - 100))
     recentPanel:SetPos(parent:GetWide() / 2, 75)
     recentPanel.Paint = function(pnl, w, h)
         draw.RoundedBox(9, 0, 20, w, h - 20, Color(135, 135, 135))
@@ -71,7 +71,7 @@ function clanSys.CurrencyMenu(parent)
 
     crMenu = vgui.Create("DPanel", parent)
     crMenu:SetSize(clanSys.ScaleW(1050), clanSys.ScaleH(640))
-    crMenu:SetPos(225, 5)
+    crMenu:SetPos(clanSys.ScaleW(225), 5)
     crMenu.Paint = function(pnl, w, h)
         draw.RoundedBox(20, 0, 20, w - 30, 40, Color(135, 135, 135))
         --"Currency: $" .. clanSys.GetClanCurrency(LocalPlayer():GetPlayerClan())
@@ -138,30 +138,32 @@ function clanSys.CurrencyMenu(parent)
         amountTextEntry:SetValue("")
     end 
 
-    local withdrawButton = vgui.Create("DButton", amountPanel)
-    withdrawButton:SetSize(amountPanel:GetWide() / 2 - 50, 35)
-    withdrawButton:SetPos(amountPanel:GetWide() * 0.5 - 100, 200)
-    withdrawButton:SetText("")
-    withdrawButton.Paint = function(pnl, w, h)
-        draw.RoundedBox(20, 0, 0, w, h, Color(142, 25, 51))
+    if LocalPlayer():GetPlayerPermissions()["withdraw"] then 
+        local withdrawButton = vgui.Create("DButton", amountPanel)
+        withdrawButton:SetSize(amountPanel:GetWide() / 2 - 50, 35)
+        withdrawButton:SetPos(amountPanel:GetWide() * 0.5 - 100, 200)
+        withdrawButton:SetText("")
+        withdrawButton.Paint = function(pnl, w, h)
+            draw.RoundedBox(20, 0, 0, w, h, Color(142, 25, 51))
 
-        draw.SimpleText("WITHDRAW", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    end
-    withdrawButton.DoClick = function()
-        if tonumber(amountToSend) <= 1 then LocalPlayer():ChatPrint("The value of the wished withdraw amount must be greater than one!") return end 
-        if tonumber(amountToSend) > tonumber(clanSys.GetClanCurrency(clan)) then LocalPlayer():ChatPrint("There is no enough money in clan storage!") return end
+            draw.SimpleText("WITHDRAW", "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        end
+        withdrawButton.DoClick = function()
+            if tonumber(amountToSend) <= 1 then LocalPlayer():ChatPrint("The value of the wished withdraw amount must be greater than one!") return end 
+            if tonumber(amountToSend) > tonumber(clanSys.GetClanCurrency(clan)) then LocalPlayer():ChatPrint("There is no enough money in clan storage!") return end
 
-        net.Start("ClanSysSendMoney")
-            net.WriteInt(amountToSend, 32) 
-            net.WriteString("withdraw")
-            net.WriteEntity(LocalPlayer())
-        net.SendToServer()
+            net.Start("ClanSysSendMoney")
+                net.WriteInt(amountToSend, 32) 
+                net.WriteString("withdraw")
+                net.WriteEntity(LocalPlayer())
+            net.SendToServer()
 
-        table.insert(clanSys.ClanMoneyHistory, {clan = clan, ply = LocalPlayer(), typeOp = "withdraw", amount = amountToSend})
+            table.insert(clanSys.ClanMoneyHistory, {clan = clan, ply = LocalPlayer(), typeOp = "withdraw", amount = amountToSend})
 
-        BuildRecentPaymentsMenu(crMenu)
-        amountToSend = 0 
-        amountTextEntry:SetValue("")
+            BuildRecentPaymentsMenu(crMenu)
+            amountToSend = 0 
+            amountTextEntry:SetValue("")
+        end
     end
 
     BuildRecentPaymentsMenu(crMenu)

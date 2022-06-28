@@ -138,8 +138,8 @@ function clanSys.ClansCreateMenu(parent)
             net.WriteTable(tblToSend)
         net.SendToServer()
 
-        parent:Remove()
-        
+        parent:GetParent():Remove()
+        clanSys.OpenMainMenu()
     end  
 
     local dismissButton = vgui.Create("DButton", clCreation)

@@ -5,7 +5,7 @@ function clanSys.ClansInviteMenu(parent)
 
     invMenu = vgui.Create("DPanel", parent)
     invMenu:SetSize(clanSys.ScaleW(1000), clanSys.ScaleH(640))
-    invMenu:SetPos(225, 5)
+    invMenu:SetPos(clanSys.ScaleW(225), 5)
     invMenu.Paint = function(pnl, w, h)
     end
 

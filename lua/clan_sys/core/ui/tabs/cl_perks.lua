@@ -5,7 +5,7 @@ function clanSys.ClanPerksMenu(parent)
 
     perksMenu = vgui.Create("DPanel", parent)
     perksMenu:SetSize(clanSys.ScaleW(1000), clanSys.ScaleH(640))
-    perksMenu:SetPos(225, 5)
+    perksMenu:SetPos(clanSys.ScaleW(225), 5)
     perksMenu.Paint = function(pnl, w, h)
     end
 
@@ -67,12 +67,12 @@ function clanSys.ClanPerksMenu(parent)
 
             for ind, tierProp in pairs(perkProp.tiers) do 
                 if level + 1 >= ind + 1 then 
-                    draw.RoundedBox(20, 5 + (ind - 1) * 95 * 0.9, 35, 95 * 0.9, h - 60, clanSys.MainColors.MainBlue)
+                    draw.RoundedBox(20, clanSys.ScaleW(5 + (ind - 1) * 95 * 0.9), 35, clanSys.ScaleW(95 * 0.9), h - 60, clanSys.MainColors.MainBlue)
                 elseif level >= #perkProp.tiers then 
                     ind = #perkProp.tiers
-                    draw.RoundedBox(20, 5 + (ind - 1) * 95 * 0.9, 35, 95 * 0.9, h - 60, clanSys.MainColors.MainBlue)
+                    draw.RoundedBox(20, clanSys.ScaleW(5 + (ind - 1) * 95 * 0.9), 35, clanSys.ScaleW(95 * 0.9), h - 60, clanSys.MainColors.MainBlue)
                 else
-                    draw.RoundedBox(20, 5 + (ind - 1) * 95 * 0.9, 35, 95 * 0.9, h - 60, Color(135, 135, 135))
+                    draw.RoundedBox(20, clanSys.ScaleW(5 + (ind - 1) * 95 * 0.9), 35, clanSys.ScaleW(95 * 0.9), h - 60, Color(135, 135, 135))
                 end
             end
         end

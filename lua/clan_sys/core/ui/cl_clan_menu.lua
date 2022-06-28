@@ -56,24 +56,16 @@ function clanSys.OpenMainMenu()
         ["Perks"] = {
             func = function() clanSys.ClanPerksMenu(mPanel) end,
             flags = {"upgrade"}
+        },
+        ["Settings"] = {
+            func = function() clanSys.ClansEditionMenu(mPanel, LocalPlayer():GetPlayerClan()) end,
+            flags = {"editgang"}
         }
-        --[[["Description"] = "all",
-        ["Members"] = "all",
-        ["Invite"] = "all",
-        ["Currency"] = "all",
-        ["Perks"] = "all",
-        ["Name & Color"] = "all",
-        ["Description"] = "all",
-        ["Members"] = "all",
-        ["Ranks"] = "all",
-        ["Logs"] = "all",
-        ["Abandon Clan"] = "all",
-        ["Admin menu"] = "all",--]]
     }
 
 
     local bPanel = vgui.Create("DPanel", Frame)
-    bPanel:SetSize(200, mPanel:GetTall() - 10)
+    bPanel:SetSize(clanSys.ScaleW(200), mPanel:GetTall() - 10)
     bPanel:SetPos(mPanel:GetX() + 5, mPanel:GetY() + 5)
     bPanel.Paint = function(pnl, w, h)
         draw.Material(0, 0, 334, h, bgMaterial)
@@ -100,7 +92,7 @@ function clanSys.OpenMainMenu()
     for k, v in SortedPairs(bTable) do
         if LocalPlayer():GetPlayerPermissions() and LocalPlayer():GetPlayerPermissions()[v.flags[1]] or v.flags[1] == "all" then
             local button = bPanelScroll:Add("clanSys_Button_Menu")
-            button:SetSize(190, 45)
+            button:SetSize(clanSys.ScaleW(190), 45)
             button:SetPos(5, 158 + (value - 1) * 55)
             button:SetName(k)
             button:SetText("")

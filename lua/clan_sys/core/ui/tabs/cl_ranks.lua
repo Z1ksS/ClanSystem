@@ -36,11 +36,35 @@ local function BuildRank(parent, selected)
                     net.SendToServer()
                 end 
 
+                local rankNameText = ""
+
+                local rankName = vgui.Create("DTextEntry", panelRankSetUp)
+                rankName:SetSize(panelRankSetUp:GetWide() - 10, 40)
+                rankName:SetPos(5, 35)
+                rankName:SetNumeric(true)
+                rankName:SetUpdateOnType(true)
+                rankName:SetValue(v.name)
+                rankName.Paint = function(pnl, w, h)
+                    draw.RoundedBox(20, 0, 0, w, h, clanSys.MainColors.MainGrey)
+
+                    local rankn = pnl:GetValue()
+                    draw.SimpleText(rankn, "Trebuchet24", w * 0.5, h * 0.5, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                end 
+                rankName.OnValueChange = function(pnl, val)
+                    rankNameText = val
+                end 
+                rankName.OnEnter = function(pnl, val)
+                    rankNameText = val
+                end 
+
                 local checkBox = vgui.Create("clanSys_CheckBox", panelRankSetUp)
                 checkBox:SetSize(50, 50)
-                checkBox:SetPos(155 + (x - 1) * 150, 25 + (y - 1) * 100)
+                checkBox:SetPos(155 + (x - 1) * 150, 155 + (y - 1) * 100)
                 checkBox:SetValue(j)
                 checkBox.OnChange = function(pnl, bool)
+                    if LocalPlayer():GetPlayerRankPriority() > v.priority then 
+                        Derma_Message("You can't edit rank with priority, higher than yours!", "Notice", "OK")
+                    end 
                     if LocalPlayer():GetPlayerRankPriority() >= v.priority then 
 
                         Derma_Query(
@@ -57,7 +81,7 @@ local function BuildRank(parent, selected)
 
                 local checkBoxLabel = vgui.Create("DLabel", panelRankSetUp)
                 checkBoxLabel:SetSize(100, 20)
-                checkBoxLabel:SetPos(210 + (x - 1) * 150, 40 + (y - 1) * 100)
+                checkBoxLabel:SetPos(210 + (x - 1) * 150, 170 + (y - 1) * 100)
                 checkBoxLabel:SetText(string.upper(i))
                 checkBoxLabel:SetFont("Trebuchet18")
                 checkBoxLabel:SetColor(Color(255, 255, 255, 255))

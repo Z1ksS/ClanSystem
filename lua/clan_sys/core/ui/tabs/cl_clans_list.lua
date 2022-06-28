@@ -19,7 +19,7 @@ function clanSys.ClansMenu(parent)
             local logo = clanSys.GetClanLogo(v.name)
 
             local clanPanel = vgui.Create("DPanel", clMenu)
-            clanPanel:SetSize(clMenu:GetWide() - 10, 70)
+            clanPanel:SetSize(clanSys.ScaleW(clMenu:GetWide() - 10), 70)
             clanPanel:SetPos(5, 45 + (value - 1) * 90)
             clanPanel.Paint = function(pnl, w, h)
                 draw.RoundedBox(1, 0, 0, w, h, clanSys.MainColors.MainGrey)
@@ -45,7 +45,7 @@ function clanSys.ClansMenu(parent)
     end
 
     local createButton = vgui.Create("DButton", clMenu)
-    createButton:SetSize(150, 25)
+    createButton:SetSize(clanSys.ScaleW(150), clanSys.ScaleH(25))
     createButton:SetPos(clMenu:GetWide() - 150, 5)
     createButton:SetText("")
     createButton.Paint = function(pnl, w, h)

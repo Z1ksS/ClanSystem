@@ -105,6 +105,16 @@ function clanSys.GetClanLogo(clan)
     end 
 end 
 
+function clanSys.GetClanLogoLink(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.logo
+        end
+    end 
+end 
+
 function clanSys.GetClanDescription(clan)
     if !clanSys.Clans then return 0 end
 
@@ -125,12 +135,42 @@ function clanSys.GetClanRanks(clan)
     end 
 end 
 
+function clanSys.GetClanName(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.name
+        end
+    end 
+end 
+
 function clanSys.GetClanIndex(clan)
     if !clanSys.Clans then return 0 end
 
     for k, v in pairs(clanSys.Clans) do
         if v.name == clan then  
             return k
+        end
+    end 
+end 
+
+function clanSys.GetClanTag(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.tag
+        end
+    end 
+end 
+
+function clanSys.GetClanPublic(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.public
         end
     end 
 end 

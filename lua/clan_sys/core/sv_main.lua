@@ -21,7 +21,8 @@ function clanSys.CreateClan(name, logo, description, tag, public, color, owner)
     for k, v in pairs(clanSys.ClanPerks) do 
         defaultPerks[k] = {
             name = v.namePerk,
-            level = 0
+            level = 0,
+            enabled = true
         }
     end
 

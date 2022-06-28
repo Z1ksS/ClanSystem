@@ -17,13 +17,15 @@ end
 hook.Add("PlayerSpawn", "clanSysPlayerSpawn", function(ply)
     clanSys.SendToClient(ply)
 
-    timer.Simple(1, function()
-        for perk, perkProp in pairs(clanSys.GetPlayerPerks(ply:GetPlayerClan())) do 
-            if perkProp.level > 0 then 
-                clanSys.ClanPerks[perk].func(ply)
+    if clanSys.Clans then 
+        timer.Simple(1, function()
+            for perk, perkProp in pairs(clanSys.GetPlayerPerks(ply:GetPlayerClan())) do 
+                if perkProp.level > 0 and perkProp.enabled then 
+                    clanSys.ClanPerks[perk].func(ply)
+                end 
             end 
-        end 
-    end)
+        end)
+    end 
 end )
 
 net.Receive("ClanSysInvitesSyncWithServer", function()
