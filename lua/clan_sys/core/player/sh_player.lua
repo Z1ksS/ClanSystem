@@ -8,8 +8,6 @@ function pMeta:GetPlayerClan()
 
         if memb[self:SteamID()] then 
             return v.name 
-        else 
-            return nil
         end 
     end
 end 
@@ -22,8 +20,6 @@ function pMeta:GetPlayerClanRank()
 
         if memb[self:SteamID()] then 
             return memb[self:SteamID()].rank
-        else 
-            return nil
         end 
     end
 end 
@@ -37,8 +33,6 @@ function pMeta:GetPlayerPermissions()
 
         if memb[self:SteamID()] then 
             return ranks[self:GetPlayerClanRank()].perms
-        else 
-            return nil
         end 
     end
 end 
@@ -52,8 +46,6 @@ function pMeta:GetPlayerRankPriority()
 
         if memb[self:SteamID()] then 
             return ranks[self:GetPlayerClanRank()].priority
-        else 
-            return nil
         end 
     end
 end 

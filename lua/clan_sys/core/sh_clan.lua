@@ -155,6 +155,16 @@ function clanSys.GetClanIndex(clan)
     end 
 end 
 
+function clanSys.GetClanId(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.id
+        end
+    end 
+end 
+
 function clanSys.GetClanTag(clan)
     if !clanSys.Clans then return 0 end
 
@@ -185,6 +195,16 @@ function clanSys.GetPlayerPerks(clan)
             else 
                 return {}
             end 
+        end
+    end 
+end 
+
+function clanSys.GetClanOwner(clan)
+    if !clanSys.Clans then return 0 end
+
+    for k, v in pairs(clanSys.Clans) do
+        if v.name == clan then  
+            return v.owner
         end
     end 
 end 

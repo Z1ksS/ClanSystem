@@ -142,8 +142,9 @@ local PANEL = {}
 function PANEL:Paint(w, h)
     draw.RoundedBox(9, 0, 0, w, h, Color(90, 90, 90))
     
-    draw.SimpleText(self.Player:Name(), "Trebuchet24", 85, 20, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-    draw.SimpleText(self.Player:GetPlayerClanRank(), "Trebuchet18", 85, 35, Color( 255, 255, 255, 255 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+    local xof, yof = surface.GetTextSize(self.Player:Name())
+    draw.SimpleText(self.Player:Name(), "clanSys_trebuchet_18", clanSys.ScaleW(50) + 10, clanSys.ScaleH(20), Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+    draw.SimpleText(self.Player:GetPlayerClanRank(), "clanSys_trebuchet_18", clanSys.ScaleW(50) + 10, clanSys.ScaleH(35), Color( 255, 255, 255, 255 ), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end 
 
 function PANEL:SetPlayer(ply)
@@ -151,8 +152,8 @@ function PANEL:SetPlayer(ply)
 
     self.Avatar = vgui.Create("CircularAvatar", self)
     self.Avatar:SetPos(5, 5)
-    self.Avatar:SetSize(50, 50)
-    self.Avatar:GetBase():SetPlayer(self.Player, 64)
+    self.Avatar:SetSize(clanSys.ScaleW(50), clanSys.ScaleH(50))
+    self.Avatar:GetBase():SetPlayer(self.Player, 50)
 end 
 
 vgui.Register("clanSys_PlayerProfile", PANEL, "DPanel")

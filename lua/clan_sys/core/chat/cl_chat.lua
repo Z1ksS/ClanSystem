@@ -8,5 +8,5 @@ net.Receive("ClanSysSendChat", function(len, ply)
     local msg = net.ReadTable()
     chat.AddText(unpack(msg))
 
-    clanSys.StoreMessages(net.ReadString(), net.ReadEntity())
+    --clanSys.StoreMessages(net.ReadString(), net.ReadEntity())
 end)

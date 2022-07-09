@@ -1,10 +1,24 @@
 function clanSys.ScaleW(sizew)
-	return ScrW() * ( sizew / 1920 )
+	return sizew * (ScrW() / 1920)
 end
 
 function clanSys.ScaleH(sizeh)
-	return ScrH() * (sizeh / 1080) 
+	return sizeh * (ScrH() / 1080) 
 end
+
+surface.CreateFont("clanSys_trebuchet_18", {
+	font = "Trebuchet", 
+	extended = false,
+	size = clanSys.ScaleH(18),
+	weight = clanSys.ScaleW(18),
+})
+
+surface.CreateFont("clanSys_trebuchet_24", {
+	font = "Trebuchet", 
+	extended = false,
+	size = clanSys.ScaleH(24),
+	weight = clanSys.ScaleW(24),
+})
 
 function draw.Material( x, y, w, h, Mat, tblColor )
 	surface.SetMaterial(Mat)
@@ -76,7 +90,7 @@ function textWrap(text, font, pxWidth)
 
 			local wordlen = surface.GetTextSize(word)
 			total = total + wordlen
-
+			
 			-- Wrap around when the max width is reached
 			if wordlen >= pxWidth then -- Split the word if the word is too big
 				local splitWord, splitPoint = charWrap(word, pxWidth - (total - wordlen))

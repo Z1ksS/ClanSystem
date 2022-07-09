@@ -45,7 +45,7 @@ function PANEL:Paint(w, h)
         draw.RoundedBox(1, 0, h - 2, w, 2, color)
     end 
 
-    draw.SimpleText(self.Name, "Trebuchet24", 5, 10, Color( 255, 255, 255 ))
+    draw.SimpleText(self.Name, "clanSys_trebuchet_24", 1, 10, Color( 255, 255, 255 ))
 
     draw.RoundedBox(1, 0, h - 2, w, 2, clanSys.MainColors.MainBlue)
 end 

@@ -27,6 +27,8 @@ net.Receive("ClanSysSendChatServer", function(len, ply)
 end )
 
 hook.Add("PlayerSay", "ClanSysPlayerSay", function(ply, text)
+	if (string.StartWith(string.lower(text), string.lower("/" .. clanSys.ChatCommand) .. " ") or (string.StartWith(string.lower(text), string.lower("!" .. clanSys.ChatCommand) .. " ") ) or string.lower(text) == string.lower(clanSys.ChatCommand)) and !ply:GetPlayerClan() then ply:ChatPrint("You are not in clan!") end 
+	
     if (string.StartWith(string.lower(text), string.lower("/" .. clanSys.ChatCommand) .. " ") or (string.StartWith(string.lower(text), string.lower("!" .. clanSys.ChatCommand) .. " ") ) or string.lower(text) == string.lower(clanSys.ChatCommand)) then 
 		text = string.Trim(string.sub(text, string.len(clanSys.ChatCommand) + 2))
 		if text != "" then sendChat(ply, text) end
@@ -36,6 +38,5 @@ hook.Add("PlayerSay", "ClanSysPlayerSay", function(ply, text)
 	if string.StartWith(string.lower(text), string.lower("/" .. clanSys.MenuCommand)) or string.StartWith(string.lower(text), string.lower("!" .. clanSys.MenuCommand)) then 
 		net.Start("ClanSysOpenMenu")
 		net.Send(ply)
-		print("t")
 	end
 end )
